@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    django_todo:
+        build: .
+        container_name: django_todo
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/usr/src/app/
+        ports:
+            - "8000:8000"
+        depends_on:
+            - pgdb_todo
+    pgdb_todo:
+        image: postgres
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+    react:
+      container_name: react_todo
+      build: ./frontend
+      ports:
+        - 3000:3000
+      volumes:
+      - ./frontend/src:/frontend/src
